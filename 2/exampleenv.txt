@@ -1,0 +1,70 @@
+# ─── MongoDB ────────────────────────────────────────────────────────────────
+# For production, enable MongoDB authentication:
+#   MONGO_URI=mongodb://fabricUser:STRONG_PASSWORD@localhost:27017/?authSource=IdentityFabric
+MONGO_URI=mongodb://localhost:27017
+MONGO_DB=IdentityFabric
+MONGO_COLLECTION=Identities
+
+# ─── Server ─────────────────────────────────────────────────────────────────
+TLS_ENABLED=true
+TLS_PFX_PATH=./certs/server.pfx
+TLS_PFX_PASSPHRASE=CHANGE-ME-use-a-strong-passphrase
+PORT=443
+NODE_ENV=production
+
+# ── REQUIRED: Generate a unique, random secret. The app WILL NOT START without this.
+# ── Run this in PowerShell:
+# ──   [Convert]::ToBase64String((1..48 | ForEach-Object { Get-Random -Max 256 }) -as [byte[]])
+SESSION_SECRET=CHANGE-ME-IMMEDIATELY-generate-a-random-64-char-string
+
+# ── Session idle timeout (milliseconds). Default 30min. Sessions are destroyed after
+# ── this period of inactivity, separate from the absolute 8-hour session max.
+SESSION_IDLE_TIMEOUT=1800000
+
+# ── HTTP → HTTPS redirect (set to 80 to automatically redirect HTTP to HTTPS)
+TLS_HTTP_REDIRECT_PORT=80
+TRUST_PROXY=true
+
+# ─── Local Accounts ────────────────────────────────────────────────────────
+# Local accounts are always enabled. Create them with:
+#   node scripts/create-local-user.js
+# Passwords: 12+ chars, uppercase, lowercase, number, special character
+# Accounts lock after 5 failed attempts for 15 minutes
+
+# ─── LDAP Authentication ────────────────────────────────────────────────────
+LDAP_ENABLED=false
+LDAP_URL=ldap://tuh.tuhs.prv
+# For encrypted LDAP (recommended):
+# LDAP_URL=ldaps://tuh.tuhs.prv
+LDAP_BASE_DN=DC=tuh,DC=tuhs,DC=prv
+LDAP_BIND_DN=CN=svc_identityfabric,OU=ServiceAccounts,DC=tuh,DC=tuhs,DC=prv
+LDAP_BIND_PASSWORD=
+LDAP_SEARCH_FILTER=(sAMAccountName={{username}})
+
+# ─── Entra ID (Azure AD) SSO ───────────────────────────────────────────────
+SAML_ENABLED=true
+SAML_ENTRY_POINT=https://login.microsoftonline.com/6c85bf61-57fb-4362-80e2-2cd2d7bef6a0/saml2
+SAML_ISSUER=https://fabric.tuhs.prv
+SAML_CALLBACK_URL=https://fabric.tuhs.prv/api/auth/saml/callback
+SAML_IDP_CERT_PATH=./certs/IdentityFabric.cer
+
+# ─── Authorization Groups ──────────────────────────────────────────────────
+# AD group names that grant roles in the web application
+ADMIN_GROUPS=SG_APP_FABRIC_ADMIN
+VIEWER_GROUPS=SG_APP_FABRIC
+
+# ─── Logging ────────────────────────────────────────────────────────────────
+LOG_LEVEL=info
+LOG_DIR=./logs
+
+# ─── SMTP / Email ───────────────────────────────────────────────────────────
+SMTP_HOST=smtp.tuhs.prv
+SMTP_PORT=25
+SMTP_SECURE=false
+SMTP_FROM=FabricReports@tuhs.temple.edu
+# Restrict scheduled report delivery to approved domains (comma-separated)
+SMTP_ALLOWED_DOMAINS=tuhs.temple.edu,temple.edu,tuhs.prv
+
+# ─── Scheduler ──────────────────────────────────────────────────────────────
+SCHEDULER_ENABLED=true
+SCHEDULER_INTERVAL=60000

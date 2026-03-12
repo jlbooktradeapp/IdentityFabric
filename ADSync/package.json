@@ -1,0 +1,31 @@
+{
+  "name": "identity-fabric-web",
+  "version": "1.0.0",
+  "description": "Identity Fabric Web Application — Query, search, and report on the INTERNAL identity collection.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "install-service": "node scripts/install-service.js install",
+    "uninstall-service": "node scripts/install-service.js uninstall"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "mongodb": "^6.10.0",
+    "express-session": "^1.18.0",
+    "connect-mongo": "^5.1.0",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0",
+    "passport-azure-ad": "^4.3.5",
+    "ldapjs": "^3.0.7",
+    "helmet": "^8.0.0",
+    "cors": "^2.8.5",
+    "compression": "^1.7.4",
+    "morgan": "^1.10.0",
+    "winston": "^3.14.0",
+    "dotenv": "^16.4.5",
+    "json2csv": "^6.0.0-alpha.2",
+    "express-rate-limit": "^7.4.0",
+    "node-windows": "^1.0.0-beta.8"
+  }
+}

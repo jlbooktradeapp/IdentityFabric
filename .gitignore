@@ -1,0 +1,8 @@
+node_modules/
+.env
+logs/
+iisnode_logs/
+*.log
+LexisNexis/
+certs/
+`nLexisNexis/*.csv

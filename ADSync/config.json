@@ -1,0 +1,15 @@
+{
+    "mongo_uri": "mongodb://localhost:27017",
+    "mongo_db": "IdentityFabric",
+    "mongo_collection": "INTERNAL",
+
+    "domain_fqdn": "tuh.tuhs.prv",
+    "domain_dn": "DC=tuh,DC=tuhs,DC=prv",
+    "group_cn": "All Current Active Users",
+    "ldap_page_size": 1000,
+
+    "log_dir": "logs",
+    "log_retention_days": 30,
+    "log_level": "INFO",
+    "mongo_batch_size": 500
+}
