@@ -6,3 +6,4 @@ iisnode_logs/
 LexisNexis/
 certs/
 `nLexisNexis/*.csv
+ADSync.config.ps1

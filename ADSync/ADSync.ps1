@@ -38,10 +38,11 @@
       - Network access to tuh.tuhs.prv domain controller and MongoDB instance
 #>
 
+
 [CmdletBinding()]
 param(
     [Parameter()]
-    [string]$MongoConnectionString = "mongodb://fabricUser:p!4223!!!xZLVq!@localhost:27017/IdentityFabric",
+    [string]$MongoConnectionString = "",
 
     [Parameter()]
     [string]$MongoDatabaseName = "IdentityFabric",
@@ -69,6 +70,16 @@ param(
 #region â”€â”€ CONFIGURATION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 $ErrorActionPreference = "Stop"
+# Load credentials from config file if connection string not supplied via parameter
+if (-not $MongoConnectionString) {
+    $configPath = Join-Path $PSScriptRoot "ADSync.config.ps1"
+    if (-not (Test-Path $configPath)) {
+        throw "ADSync.config.ps1 not found. Copy ADSync.config.example.ps1 and fill in your credentials."
+    }
+    . $configPath
+    $MongoConnectionString = "mongodb://${MongoUser}:${MongoPassword}@${MongoHost}/${MongoDatabaseName}"
+    $MongoDatabaseName     = $MongoDatabaseName   # already set by config
+}
 $SourceName            = "ActiveDirectory"
 $RetrievalTimestamp    = (Get-Date).ToUniversalTime()
 $ISOTimestamp          = $RetrievalTimestamp.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
