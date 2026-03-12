@@ -11,6 +11,7 @@ const logger = require('../config/logger');
 const mongo = require('./mongo');
 const reports = require('./reports');
 const email = require('./email');
+const { checkDuplicates } = require('./duplicateCheck');
 
 // Frequency → milliseconds mapping (minimum interval between runs)
 const FREQUENCY_MS = {
@@ -247,6 +248,10 @@ async function tick() {
     if (dueCount > 0) {
       logger.info(`Scheduler: Processed ${dueCount} due schedule(s).`);
     }
+
+    // Run duplicate check on every tick — it is fast (projection-only scan)
+    // and keeps the Duplicate flag current after every AD sync cycle.
+    await checkDuplicates();
   } catch (err) {
     logger.error(`Scheduler tick error: ${err.message}`);
   } finally {

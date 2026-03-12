@@ -1171,4 +1171,20 @@ router.get('/my-permissions', async (req, res) => {
   }
 });
 
+// ── Duplicate Identity Check (Admin) ─────────────────────────────────────────
+
+// POST /api/admin/run-duplicate-check
+// Manually triggers a full duplicate scan. Returns a summary of results.
+router.post('/admin/run-duplicate-check', requireRole('admin'), async (req, res) => {
+  try {
+    const { checkDuplicates } = require('../services/duplicateCheck');
+    logger.info(`[DuplicateCheck] Manual trigger by ${req.user.username}`);
+    const summary = await checkDuplicates();
+    res.json({ success: true, summary });
+  } catch (err) {
+    logger.error(`[DuplicateCheck] Manual trigger error: ${err.message}`);
+    res.status(500).json({ success: false, error: 'Duplicate check failed.' });
+  }
+});
+
 module.exports = router;
