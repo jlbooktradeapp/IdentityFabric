@@ -15,7 +15,7 @@ let collection = null;
 async function connect() {
   if (client) return { client, db, collection };
 
-  logger.info(`Connecting to MongoDB at ${config.mongo.uri}...`);
+  logger.info(`Connecting to MongoDB`);
   client = new MongoClient(config.mongo.uri, {
     maxPoolSize: 20,
     minPoolSize: 2,
